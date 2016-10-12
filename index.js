@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+// import * as firebase from 'firebase'
 import { 
 	StyleSheet,
 	Navigator,
@@ -8,6 +9,12 @@ import {
 } from 'react-native'
 import Main from './components/Main'
 import Detail from './components/Detail'
+
+// Initialize Firebase
+// const firebaseConfig = {
+//   databaseURL: "https://insectapp-fd327.firebaseio.com/",
+// };
+// const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 const styles = StyleSheet.create({
 	title: {
@@ -61,76 +68,74 @@ const renderNavigationBar = () => {
 	)
 }
 
-const renderScene = (route, navigator, routes) => {
-  switch (route.pathname) {
-    case 'main':
-      return (
-      	<Main 
-      		onPressImage={(passProps) => {
-      			const routeData = {...routes[1], props: passProps}
-      			navigator.push(routeData)
-    			}} />
-  		)
-    case 'detail':
-      return (
-      	<Detail 
-      		name={route.props.name} 
-      		timeToHavest={route.props.timeToHavest} 
-      		maxTimeToHavest={route.props.maxTimeToHavest} 
-      		
-      		temperatureStatus={route.props.temperatureStatus} 
-      		maxTemperatureStatus={route.props.maxTemperatureStatus} 
-      		
-      		lightStatus={route.props.lightStatus} 
-      		maxLightStatus={route.props.maxLightStatus} 
-      		
-      		waterStatus={route.props.waterStatus} 
-      		maxWaterStatus={route.props.maxWaterStatus} 
-      		
-      		url={route.props.url} />
-    	)
-  }
-}
+class App extends Component {
 
-// name, 
-// 			timeToHavest, maxTimeToHavest 
-// 			temperatureStatus, maxTemperatureStatus
-// 			lightStatus, maxLightStatus 
-// 			waterStatus, maxWaterStatus
-//<Detail name={route.props.name} time={route.props.time} temperature={route.props.temperature} humanity={route.props.humanity} />
+	_renderScene = (route, navigator, routes) => {
+	  switch (route.pathname) {
+	    case 'main':
+	      return (
+	      	<Main 
+	      		onPressImage={(passProps) => {
+	      			const routeData = {...routes[1], props: passProps}
+	      			navigator.push(routeData)
+	    			}} />
+	  		)
+	    case 'detail':
+	      return (
+	      	<Detail 
+	      		name={route.props.name} 
+	      		timeToHavest={route.props.timeToHavest} 
+	      		maxTimeToHavest={route.props.maxTimeToHavest} 
+	      		
+	      		temperatureStatus={route.props.temperatureStatus} 
+	      		maxTemperatureStatus={route.props.maxTemperatureStatus} 
+	      		
+	      		lightStatus={route.props.lightStatus} 
+	      		maxLightStatus={route.props.maxLightStatus} 
+	      		
+	      		waterStatus={route.props.waterStatus} 
+	      		maxWaterStatus={route.props.maxWaterStatus} 
+	      		
+	      		url={route.props.url} />
+	    	)
+	  }
+	}
 
-const App = () => {
-	const defaultPassProps = {
-		name: 'Insec',
-		timeToHavest: 0,
-		maxTimeToHavest: 30,
-		temperatureStatus: 0,
-		maxTemperatureStatus: 50,
-		lightStatus: 0,
-		maxLightStatus: 100,
-		waterStatus: 0,
-		maxWaterStatus: 100,
-		url: ''
-	} 
-	const routes = [
-    {title: 'Insect', pathname: 'main', index: 0, props: defaultPassProps},
-    {title: 'Detail', pathname: 'detail', index: 1, props: defaultPassProps},
-	]
+	render() {
+		const defaultPassProps = {
+			name: 'Insec',
+			timeToHavest: 0,
+			maxTimeToHavest: 30,
+			temperatureStatus: 0,
+			maxTemperatureStatus: 50,
+			lightStatus: 0,
+			maxLightStatus: 100,
+			waterStatus: 0,
+			maxWaterStatus: 100,
+			url: 'https://placeholdit.imgix.net/~text?txtsize=14&txt=150%C3%97150&w=150&h=150'
+		}
 
-  return (
-    <Navigator
-      initialRoute={routes[0]}
-      initialRouteStack={routes}
-      renderScene={(route, navigator) => 
-      	renderScene(route, navigator, routes)
-      }
-      navigationBar={renderNavigationBar()}
-	  	style={{paddingTop: 60}}
-    />
-  )
+		const routes = [
+    	{title: 'Insect', pathname: 'main', index: 0, props: defaultPassProps},
+    	{title: 'Detail', pathname: 'detail', index: 1, props: defaultPassProps},
+		]
+
+	  return (
+	    <Navigator
+	      initialRoute={routes[0]}
+	      initialRouteStack={routes}
+	      renderScene={(route, navigator) => 
+	      	this._renderScene(route, navigator, routes)
+	      }
+	      navigationBar={renderNavigationBar()}
+		  	style={{paddingTop: 60}}
+	    />
+	  )
+	}
 }
 
 export default App
+
 
 
 

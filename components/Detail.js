@@ -97,9 +97,7 @@ class Detail extends Component {
 	renderHavestTime = (value) => {
 		return (
 			<View style={havestTime.container}>
-				<Text style={havestTime.title}>
-					ระยะเวลาเก็บแมลง
-				</Text>
+				<Text style={havestTime.title}>ระยะเวลาเก็บแมลง</Text>
 				<Progress.Bar 
 					style={havestTime.progressView}
 					progress={value} 

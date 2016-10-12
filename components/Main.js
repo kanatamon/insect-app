@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import * as firebase from 'firebase'
 import { 
 	StyleSheet, 
 	View, 
@@ -7,6 +8,12 @@ import {
 	TouchableHighlight,
 	ScrollView 
 } from 'react-native';
+
+// Initialize Firebase
+const firebaseConfig = {
+  databaseURL: "https://insectapp-fd327.firebaseio.com/",
+};
+const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 const styles = StyleSheet.create({
   row: {
@@ -44,47 +51,39 @@ const Img = ({url, onPressImage}) => (
 class Main extends Component {
 
 	state = {
-		insects: [
-			{
-				name: 'Insec',
-				timeToHavest: 15,
-				maxTimeToHavest: 30,
-				temperatureStatus: 23,
-				maxTemperatureStatus: 50,
-				lightStatus: 30,
-				maxLightStatus: 100,
-				waterStatus: 12,
-				maxWaterStatus: 100,
-				url: 'https://placeholdit.imgix.net/~text?txtsize=14&txt=150%C3%97150&w=150&h=150'
-			},
-			{
-				name: 'Insect 2',
-				name: 'Insec',
-				timeToHavest: 25,
-				maxTimeToHavest: 30,
-				temperatureStatus: 26,
-				maxTemperatureStatus: 50,
-				lightStatus: 64,
-				maxLightStatus: 100,
-				waterStatus: 64,
-				maxWaterStatus: 100,
-				url: 'https://placeholdit.imgix.net/~text?txtsize=14&txt=150%C3%97150&w=150&h=150'
-			},
-			{
-				name: 'insect 3',
-				name: 'Insec',
-				timeToHavest: 19,
-				maxTimeToHavest: 30,
-				temperatureStatus: 46,
-				maxTemperatureStatus: 50,
-				lightStatus: 65,
-				maxLightStatus: 100,
-				waterStatus: 30,
-				maxWaterStatus: 100,
-				url: 'https://placeholdit.imgix.net/~text?txtsize=14&txt=150%C3%97150&w=150&h=150'
-			}
-		]
+		insects: []
 	}
+
+	constructor(props) {
+	  super(props)
+		this.itemsRef = firebaseApp.database().ref()
+	}
+
+	listenForItems(itemsRef) {
+    itemsRef.on('value', (snap) => {
+    	console.log('snap', snap)
+      // get children as an array
+      var items = [];
+      snap.forEach((child) => {
+        // items.push({
+        //   title: child.val().title,
+        //   _key: child.key
+        // });
+        items.push(child.val());
+        // console.log('child', child.val())
+      });
+
+      // this.setState({
+      //   dataSource: this.state.dataSource.cloneWithRows(items)
+      // });
+      this.setState({ insects: items })
+
+    })
+  }
+
+  componentDidMount() {
+    this.listenForItems(this.itemsRef)
+  }
 
 	handleOnPressImage = (data) => {
 		const { onPressImage } = this.props
