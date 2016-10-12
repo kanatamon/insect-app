@@ -75,21 +75,42 @@ const renderScene = (route, navigator, routes) => {
       return (
       	<Detail 
       		name={route.props.name} 
-      		time={route.props.time} 
-      		temperature={route.props.temperature} 
-      		humanity={route.props.humanity} 
+      		timeToHavest={route.props.timeToHavest} 
+      		maxTimeToHavest={route.props.maxTimeToHavest} 
+      		
+      		temperatureStatus={route.props.temperatureStatus} 
+      		maxTemperatureStatus={route.props.maxTemperatureStatus} 
+      		
+      		lightStatus={route.props.lightStatus} 
+      		maxLightStatus={route.props.maxLightStatus} 
+      		
+      		waterStatus={route.props.waterStatus} 
+      		maxWaterStatus={route.props.maxWaterStatus} 
+      		
       		url={route.props.url} />
     	)
   }
 }
+
+// name, 
+// 			timeToHavest, maxTimeToHavest 
+// 			temperatureStatus, maxTemperatureStatus
+// 			lightStatus, maxLightStatus 
+// 			waterStatus, maxWaterStatus
 //<Detail name={route.props.name} time={route.props.time} temperature={route.props.temperature} humanity={route.props.humanity} />
 
 const App = () => {
 	const defaultPassProps = {
 		name: 'Insec',
-		time: 0,
-		temperature: 0,
-		humanity: 0
+		timeToHavest: 0,
+		maxTimeToHavest: 30,
+		temperatureStatus: 0,
+		maxTemperatureStatus: 50,
+		lightStatus: 0,
+		maxLightStatus: 100,
+		waterStatus: 0,
+		maxWaterStatus: 100,
+		url: ''
 	} 
 	const routes = [
     {title: 'Insect', pathname: 'main', index: 0, props: defaultPassProps},

@@ -46,24 +46,41 @@ class Main extends Component {
 	state = {
 		insects: [
 			{
-				name: 'insect 1',
-				time: 12,
-				temperature: 25,
-				humanity: 30,
+				name: 'Insec',
+				timeToHavest: 15,
+				maxTimeToHavest: 30,
+				temperatureStatus: 23,
+				maxTemperatureStatus: 50,
+				lightStatus: 30,
+				maxLightStatus: 100,
+				waterStatus: 12,
+				maxWaterStatus: 100,
 				url: 'https://placeholdit.imgix.net/~text?txtsize=14&txt=150%C3%97150&w=150&h=150'
 			},
 			{
-				name: 'insect 2',
-				time: 16,
-				temperature: 25,
-				humanity: 30,
+				name: 'Insect 2',
+				name: 'Insec',
+				timeToHavest: 25,
+				maxTimeToHavest: 30,
+				temperatureStatus: 26,
+				maxTemperatureStatus: 50,
+				lightStatus: 64,
+				maxLightStatus: 100,
+				waterStatus: 64,
+				maxWaterStatus: 100,
 				url: 'https://placeholdit.imgix.net/~text?txtsize=14&txt=150%C3%97150&w=150&h=150'
 			},
 			{
 				name: 'insect 3',
-				time: 2,
-				temperature: 25,
-				humanity: 30,
+				name: 'Insec',
+				timeToHavest: 19,
+				maxTimeToHavest: 30,
+				temperatureStatus: 46,
+				maxTemperatureStatus: 50,
+				lightStatus: 65,
+				maxLightStatus: 100,
+				waterStatus: 30,
+				maxWaterStatus: 100,
 				url: 'https://placeholdit.imgix.net/~text?txtsize=14&txt=150%C3%97150&w=150&h=150'
 			}
 		]
