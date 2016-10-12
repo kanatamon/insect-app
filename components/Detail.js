@@ -8,7 +8,7 @@ import {
 } from 'react-native'
 import * as Progress from 'react-native-progress'
 
-const window = Dimensions.get('window');
+const window = Dimensions.get('window')
 
 const styles = StyleSheet.create({
 	name: {
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
 	}
 })
 
-const havestTime = StyleSheet.create({
+const timeToHavestStyles = StyleSheet.create({
 	container: {
 
 	},
@@ -53,7 +53,7 @@ const havestTime = StyleSheet.create({
 	}
 })
 
-const status = StyleSheet.create({
+const statusStyles = StyleSheet.create({
 	container: {
 		width: window.width,
 		borderStyle: 'solid',
@@ -63,7 +63,7 @@ const status = StyleSheet.create({
 		paddingTop: 6,
 		flex: 1,
 		flexDirection: 'column',
-		justifyContent: 'center'
+		justifyContent: 'center',
 	},
 	item: {
 		flexDirection: 'row',
@@ -75,13 +75,13 @@ const status = StyleSheet.create({
 
 class Detail extends Component {
 
-	renderStatusItem = (value, key) => {
+	_renderStatusItem = (key, value, icon) => {
 		return (
-			<View key={key} style={status.item}>
+			<View key={key} style={statusStyles.item}>
 				{/*<View style={{width: 50, height: 50, backgroundColor: '#ccc'}} />*/}
 				<Image
 					style={{width: 50, height: 50}}
-          source={require('../img/favicon.png')}
+          source={icon}
         />
 				<View>
 					<Progress.Bar
@@ -95,18 +95,18 @@ class Detail extends Component {
 		)
 	}
 
-	renderHavestTime = (value) => {
+	_renderTimeToHavest = (value) => {
 		return (
-			<View style={havestTime.container}>
-				<Text style={havestTime.title}>ระยะเวลาเก็บแมลง</Text>
+			<View style={timeToHavestStyles.container}>
+				<Text style={timeToHavestStyles.title}>ระยะเวลาเก็บแมลง</Text>
 				<Progress.Bar 
-					style={havestTime.progressView}
+					style={timeToHavestStyles.progressView}
 					progress={value} 
 					width={260}
 					height={16}
 					borderRadius={8}
 					color={'#ccc'} /> 							
-				<View style={havestTime.progressTag}>
+				<View style={timeToHavestStyles.progressTag}>
 					<Text> 0 วัน</Text>
 					<Text> 30 วัน</Text>
 				</View>
@@ -129,17 +129,34 @@ class Detail extends Component {
 		const lightValue = lightStatus / maxLightStatus
 		const waterValue = waterStatus / maxWaterStatus
 
-		const statusValues = [temperatureValue, lightValue, waterValue]
+		const status = [
+			{
+				value: temperatureValue,
+				icon: require('../img/thermometer.png')
+			},
+			{
+				value: lightValue,
+				icon: require('../img/sun.png')
+			},
+			{
+				value: waterValue,
+				icon: require('../img/raindrop.png')
+			}
+		]
 
 		return (
 			<View style={styles.container}>
 				<Text style={styles.name}>{name}</Text>
 				<Image style={styles.image} source={{uri: url}} />
 
-				{this.renderHavestTime(timeToHavestValue)}
+				{this._renderTimeToHavest(timeToHavestValue)}
 
-				<View style={status.container}>
-					{statusValues.map((value, index) => this.renderStatusItem(value, index))}
+				<View style={statusStyles.container}>
+					{
+						status.map((item, index) => 
+							this._renderStatusItem(index, item.value, item.icon)
+						)
+					}
 				</View>
 			</View>
 		)
