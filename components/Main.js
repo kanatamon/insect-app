@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import * as firebase from 'firebase'
+// import * as firebase from 'firebase'
 import { 
 	StyleSheet, 
 	View, 
@@ -10,10 +10,10 @@ import {
 } from 'react-native';
 
 // Initialize Firebase
-const firebaseConfig = {
-  databaseURL: "https://insectapp-fd327.firebaseio.com/",
-};
-const firebaseApp = firebase.initializeApp(firebaseConfig);
+// const firebaseConfig = {
+//   databaseURL: "https://insectapp-fd327.firebaseio.com/",
+// };
+// const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 const styles = StyleSheet.create({
   row: {
@@ -50,48 +50,13 @@ const Img = ({url, onPressImage}) => (
 
 class Main extends Component {
 
-	state = {
-		insects: []
-	}
-
-	constructor(props) {
-	  super(props)
-		this.itemsRef = firebaseApp.database().ref()
-	}
-
-	listenForItems(itemsRef) {
-    itemsRef.on('value', (snap) => {
-    	console.log('snap', snap)
-      // get children as an array
-      var items = [];
-      snap.forEach((child) => {
-        // items.push({
-        //   title: child.val().title,
-        //   _key: child.key
-        // });
-        items.push(child.val());
-        // console.log('child', child.val())
-      });
-
-      // this.setState({
-      //   dataSource: this.state.dataSource.cloneWithRows(items)
-      // });
-      this.setState({ insects: items })
-
-    })
-  }
-
-  componentDidMount() {
-    this.listenForItems(this.itemsRef)
-  }
-
 	handleOnPressImage = (data) => {
 		const { onPressImage } = this.props
 		onPressImage(data)
 	}
 
 	render() {
-		const { insects } = this.state
+		const { insects } = this.props
 
 		return (
 			<ScrollView> 
