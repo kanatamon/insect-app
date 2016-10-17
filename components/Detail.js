@@ -75,40 +75,51 @@ const statusStyles = StyleSheet.create({
 
 class Detail extends Component {
 
-	_renderStatusItem = (key, value, icon) => {
+	_renderStatusItem = (status) => {
 		return (
-			<View key={key} style={statusStyles.item}>
-				{/*<View style={{width: 50, height: 50, backgroundColor: '#ccc'}} />*/}
-				<Image
-					style={{width: 50, height: 50}}
-          source={icon}
-        />
-				<View>
-					<Progress.Bar
-						style={{marginTop: 19, marginLeft: 15}} 
-						progress={value} 
-						width={200}
-						height={12}
-						color={'#ccc'} />
-				</View>
+			<View style={statusStyles.container}>
+				{
+					status.map((item, index) => {
+						const value = item.value / item.maxValue
+						return (
+							<View key={index} style={statusStyles.item}>
+								<Image
+									style={{width: 50, height: 50}}
+				          source={item.icon}
+				        />
+								<View style={{marginTop: 19, marginLeft: 15}}>
+									<Progress.Bar
+										progress={value} 
+										width={200}
+										height={12}
+										color={'#ccc'} />
+									<View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+										<Text>{`0 ${item.symbol}`}</Text>
+										<Text>{`${item.maxValue} ${item.symbol}`}</Text>
+									</View>
+								</View>
+							</View>
+						)
+					})
+				}
 			</View>
 		)
 	}
 
-	_renderTimeToHavest = (value) => {
+	_renderTimeToHavest = (progressValue, maxValue) => {
 		return (
 			<View style={timeToHavestStyles.container}>
 				<Text style={timeToHavestStyles.title}>ระยะเวลาเก็บแมลง</Text>
 				<Progress.Bar 
 					style={timeToHavestStyles.progressView}
-					progress={value} 
+					progress={progressValue} 
 					width={260}
 					height={16}
 					borderRadius={8}
 					color={'#ccc'} /> 							
 				<View style={timeToHavestStyles.progressTag}>
 					<Text> 0 วัน</Text>
-					<Text> 30 วัน</Text>
+					<Text>{`${maxValue} วัน`}</Text>
 				</View>
 			</View>
 		)
@@ -125,21 +136,27 @@ class Detail extends Component {
 		} = this.props
 
 		const timeToHavestValue = timeToHavest / maxTimeToHavest
-		const temperatureValue = temperatureStatus / maxTemperatureStatus
-		const lightValue = lightStatus / maxLightStatus
-		const waterValue = waterStatus / maxWaterStatus
+		// const temperatureValue = temperatureStatus / maxTemperatureStatus
+		// const lightValue = lightStatus / maxLightStatus
+		// const waterValue = waterStatus / maxWaterStatus
 
 		const status = [
 			{
-				value: temperatureValue,
+				symbol: '°C',
+				value: temperatureStatus,
+				maxValue: maxTemperatureStatus,
 				icon: require('../img/thermometer.png')
 			},
 			{
-				value: lightValue,
+				symbol: 'lu',
+				value: lightStatus,
+				maxValue: maxLightStatus,
 				icon: require('../img/sun.png')
 			},
 			{
-				value: waterValue,
+				symbol: '%',
+				value: waterStatus,
+				maxValue: maxWaterStatus,
 				icon: require('../img/raindrop.png')
 			}
 		]
@@ -149,15 +166,9 @@ class Detail extends Component {
 				<Text style={styles.name}>{name}</Text>
 				<Image style={styles.image} source={{uri: url}} />
 
-				{this._renderTimeToHavest(timeToHavestValue)}
+				{this._renderTimeToHavest(timeToHavestValue, maxTimeToHavest)}
 
-				<View style={statusStyles.container}>
-					{
-						status.map((item, index) => 
-							this._renderStatusItem(index, item.value, item.icon)
-						)
-					}
-				</View>
+				{this._renderStatusItem(status)}
 			</View>
 		)
 	}

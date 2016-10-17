@@ -15,8 +15,9 @@ import Add from './components/Add'
 
 // Initialize Firebase
 const firebaseConfig = {
-  databaseURL: "https://insect-app.firebaseio.com/",
+  databaseURL: "https://test-db-62fc0.firebaseio.com/",
 };
+
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 const styles = StyleSheet.create({
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
   }
 })
 
-const NavigationBar = ({AddRoute, MoreDetailRoute}) => {
+const NavigationBar = ({AddRoute, MoreDetailRoute, onSendPress}) => {
 	return (
 		<Navigator.NavigationBar
     	routeMapper={{
@@ -88,6 +89,16 @@ const NavigationBar = ({AddRoute, MoreDetailRoute}) => {
 				          <Text style={styles.textBtn}>?</Text>
 				        </TouchableHighlight>
 			    		)
+		    		case 'add':
+	      			return (
+				    		<TouchableHighlight 
+				        	style={styles.backBtn}
+				        	underlayColor="rgba(0,0,0,0)"
+				        	onPress={() => onSendPress({name: 'test'})}
+		        		>
+				          <Text style={styles.textBtn, {marginTop: 6, fontSize: 16, color: '#fff'}}>send</Text>
+				        </TouchableHighlight>
+			    		)
       		}
       	},
        	Title: (route, navigator, index, navState) => { 
@@ -101,7 +112,8 @@ const NavigationBar = ({AddRoute, MoreDetailRoute}) => {
 class App extends Component {
 
 	state = {
-		insects: []
+		insects: [],
+		insectInput: {}
 	}
 
 	constructor(props) {
@@ -120,6 +132,16 @@ class App extends Component {
 
       this.setState({ insects: items })
     })
+  }
+
+  addInsect = () => {
+    // this.itemsRef.push(this.state.insectInput)
+    console.log('add an insect', this.state.insectInput)
+  }
+
+  handleOnInsectInputChange = (data) => {
+  	this.setState({ insectInput: data })
+  	console.log('add an insect', this.state.insectInput)
   }
 
   componentDidMount() {
@@ -159,7 +181,7 @@ class App extends Component {
 	    	)
     	case 'add':
     		return (
-    			<Add />
+    			<Add onInputChange={this.handleOnInsectInputChange} />
   			)
 			case 'moredetail':
 				return (
@@ -185,19 +207,7 @@ class App extends Component {
 	}
 
 	render() {
-		// const defaultPassProps = {
-		// 	name: 'Insec',
-		// 	timeToHavest: 0,
-		// 	maxTimeToHavest: 30,
-		// 	temperatureStatus: 0,
-		// 	maxTemperatureStatus: 50,
-		// 	lightStatus: 0,
-		// 	maxLightStatus: 100,
-		// 	waterStatus: 0,
-		// 	maxWaterStatus: 100,
-		// 	url: 'https://placeholdit.imgix.net/~text?txtsize=14&txt=150%C3%97150&w=150&h=150'
-		// }
-
+	
 		const routes = [
     	{title: 'Insect', pathname: 'main', index: 0, props: { }},
     	{title: 'Detail', pathname: 'detail', index: 1, props: { }},
@@ -214,7 +224,8 @@ class App extends Component {
 	      }
 	      navigationBar={NavigationBar({
 	      	AddRoute: routes[2],
-	      	MoreDetailRoute: routes[3]
+	      	MoreDetailRoute: routes[3],
+	      	onSendPress: this.addInsect
 	      })}
 		  	style={{paddingTop: 60}}
 	    />
