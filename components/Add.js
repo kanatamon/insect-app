@@ -230,7 +230,7 @@ export default class Add extends Component {
 
 					<View style={styles.descriptionInputContainer}>
 						<View>
-							<Text style={{fontSize: 16, marginBottom: 4}}>คำอธิบาย</Text>
+							<Text style={{fontSize: 16, marginBottom: 4}}>รายละเอียดอาหาร</Text>
 							<TextInput 
 								style={{
 									width: window.width - 32, 
