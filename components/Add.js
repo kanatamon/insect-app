@@ -98,6 +98,10 @@ export default class Add extends Component {
     imageSource: null,
     name: '',
     timeToHavest: 0,
+    maxTimeToHavest: 30,
+    maxTemperatureStatus: 50,
+    maxLightStatus: 100,
+    maxWaterStatus: 100,
 		temperatureStatus: 0,
 		lightStatus: 0,
 		waterStatus: 0,
@@ -105,7 +109,7 @@ export default class Add extends Component {
 		secondaryHeight: 0,
 		primaryText: '',
 		primaryHeight: 0,
-		url: ''
+		path: ''
   }
 
   selectPhotoTapped = () => {
@@ -144,46 +148,53 @@ export default class Add extends Component {
         }
 
         this.setState({
-          avatarSource: source
-        });
+        	imageSource: source, 
+        	path: source.uri
+        })
+
+        this.handleOnInputChange(this.state)
+        // this.props.onTakePhoto(source.uri)
       }
     });
   }
 
-  handleOnInputChange = (state) => {
-  	const data = {...state}
+  handleOnInputChange = () => {
+  	const data = {...this.state}
   	delete data.imageSource
+  	delete data.primaryHeight
+  	delete data.secondaryHeight
+
 		this.props.onInputChange(data)
   }
 
   handleOnNameChange = (value) => {
   	this.setState({name: value})
-  	this.handleOnInputChange(this.state)
+  	this.handleOnInputChange()
   	// console.log('input changing...')
   }
 
   handleOnTimeToHavestChange = (value) => {
-  	this.setState({timeToHavest: value})
-  	this.handleOnInputChange(this.state)
+  	this.setState({timeToHavest: Number(value)})
+  	this.handleOnInputChange()
   }
 
   handleOnTemperatureChange = (value) => {
-  	this.setState({temperatureStatus: value})
-  	this.handleOnInputChange(this.state)
+  	this.setState({temperatureStatus: Number(value)})
+  	this.handleOnInputChange()
   } 
 
   handleOnWaterStatusChange = (value) => {
-  	this.setState({waterStatus: value})
-  	this.handleOnInputChange(this.state)
+  	this.setState({waterStatus: Number(value)})
+  	this.handleOnInputChange()
   }
 
   handleOnLightStatusChange = (value) => {
-  	this.setState({lightStatus: value})
-  	this.handleOnInputChange(this.state)
+  	this.setState({lightStatus: Number(value)})
+  	this.handleOnInputChange()
   }
 
   componentDidMount() {
-  	this.handleOnInputChange(this.state)
+  	this.handleOnInputChange()
   }
 
 	render() {
@@ -206,7 +217,7 @@ export default class Add extends Component {
 			          <View style={[styles.photo, styles.photoContainer, {marginBottom: 20}]}>
 			          { 
 			            this.state.imageSource === null ? <Text>Select a Photo</Text> :
-			            <Image style={stylse.photo} source={this.state.imageSource} />
+			            <Image style={styles.photo} source={this.state.imageSource} />
 			          }
 			          </View>
 			        </TouchableOpacity>
@@ -245,6 +256,7 @@ export default class Add extends Component {
 				            primaryText: event.nativeEvent.text,
 				            primaryHeight: event.nativeEvent.contentSize.height,
 				          })
+				          this.handleOnInputChange()
 				        }}
         				value={this.state.primaryText} >
 							</TextInput>
@@ -265,6 +277,7 @@ export default class Add extends Component {
 				            secondaryText: event.nativeEvent.text,
 				            secondaryHeight: event.nativeEvent.contentSize.height,
 				          })
+				          this.handleOnInputChange()
 				        }}
         				value={this.state.secondaryText} >
 							</TextInput>
