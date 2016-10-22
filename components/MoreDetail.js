@@ -56,11 +56,23 @@ class MoreDetail extends Component {
 
 	state = {
 		primaryHeight: 0,
-		secondaryHeight: 0
+		secondaryHeight: 0,
+		primaryText: '',
+		secondaryText: ''
 	}
+
+	// componentDidMount() {
+	// 	const { primaryText, secondaryText, url } = this.props
+	// 	this.setState({
+	// 		primaryText,
+	// 		secondaryText
+	// 	})
+	// }
 
 	render() {
 		const { primaryText, secondaryText, url } = this.props
+		// const { url } = this.props
+		// const { primaryText, secondaryText } = this.state
 		// const primaryText = 'TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest'
 		// const secondaryText = 'TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest'
 		// const url = 'https://placeholdit.imgix.net/~text?txtsize=14&txt=150%C3%97150&w=150&h=150'
@@ -70,27 +82,31 @@ class MoreDetail extends Component {
 				<View style={styles.container}>
 					<Image style={styles.image} source={{uri: url}}/>
 					<View style={styles.primaryTextContainer}>
-						<Text>รายละเอียดอาหาร</Text>
+						<Text style={{ fontSize: 20 }}>รายละเอียดอาหาร</Text>
 						<TextInput 
 							style={{
 								width: window.width - 32, 
-								height: Math.max(80, this.state.primaryHeight), 
+								height: Math.max(80, this.state.primaryHeight),
+								// flex: 1, 
 								borderWidth: 1, 
 								borderColor: '#ccc',
 								marginTop: 8,
-								padding: 8
+								padding: 8,
+								fontSize: 16
 							}}
 							value={primaryText} 
 							editable={false} 
 							multiline={true}
-							onChange={(event) => {
+							onContentSizeChange={(event) => {
+								const height = event.nativeEvent.contentSize.height
+			          console.log('onChange ' + primaryText, height)
 			          this.setState({
-			            primaryHeight: event.nativeEvent.contentSize.height,
+			            primaryHeight: height,
 			          })
 			        }} />
 					</View>
 					<View style={styles.secondaryTextContainer}>
-						<Text>รายละเอียดการเลี้ยง</Text>
+						<Text style={{ fontSize: 20 }}>รายละเอียดการเลี้ยง</Text>
 						<TextInput 
 							style={{
 								width: window.width - 32, 
@@ -98,14 +114,16 @@ class MoreDetail extends Component {
 								borderWidth: 1, 
 								borderColor: '#ccc',
 								marginTop: 8,
-								padding: 8
+								padding: 8,
+								fontSize: 16
 							}}
 							value={secondaryText} 
 							editable={false} 
 							multiline={true}
-							onChange={(event) => {
+							onContentSizeChange={(event) => {
+								const height = event.nativeEvent.contentSize.height
 			          this.setState({
-			            secondaryHeight: event.nativeEvent.contentSize.height,
+			            secondaryHeight: height,
 			          })
 			        }} />
 					</View>
